@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
+/*@theme {*/
+/*  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,*/
+/*    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";*/
+/*}*/
 
 html,
 body {
@@ -12,4 +12,36 @@ body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+
+#root {
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+}
+
+.app{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: gray;
+    overflow-x: hidden;
+    padding-top: 20px;
+
+}
+
+.main {
+    margin-left: 250px;
+    padding: 20px;
+
 }
