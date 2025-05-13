@@ -19,8 +19,8 @@ type PropsBlockTextInput = {
 };
 export default function BlockTextInput(props: PropsBlockTextInput) {
   const block = useRef<Block<any>>(props.block);
-  const needUpdateBlockList = useBlockStore().use.needUpdateBlockList();
-  const addBlock = useBlockStore().use.addBlock();
+  const needUpdateBlockList = useBlockStore.use.needUpdateBlockList();
+  const addBlock = useBlockStore.use.addBlock();
 
   return (
     <>

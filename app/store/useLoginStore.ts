@@ -11,7 +11,7 @@ import type {
 } from "@supabase/supabase-js";
 import {
     supabase
-} from "~/lib/apiClient.client";
+} from "~/lib/apiClient";
 import {
     updateProject
 } from "~/api/api-project";
@@ -27,7 +27,7 @@ type State = {
 };
 
 type Actions = {
-  login: (session: Session) => void;
+  login: (session: Session | null) => void;
   logout: () => void;
   updateUser: () => void;
   updateProject: () => void;
@@ -39,11 +39,12 @@ export const store = create<State & Actions>()(
     session: null,
     user: null,
     project: null,
-    login: (session) =>
-      setState(() => {
-        getState().session = session;
-        getState().isLogin = true;
-      }),
+    login: (session) =>{
+        setState(() => {
+            getState().session = session;
+            getState().isLogin = true;
+        })
+    },
     logout: () => {
       setState(() => {
         getState().isLogin = true;

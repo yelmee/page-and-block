@@ -73,4 +73,4 @@ export const store = create<State & Actions>()(
   })),
 );
 
-export const useBlockStore = () => createSelectors(store);
+export const useBlockStore = createSelectors(store);

@@ -2,11 +2,8 @@
 
 // page
 import {
-    useLoginStore
-} from "~/store/useLoginStore";
-import {
     supabase
-} from "~/lib/apiClient.client";
+} from "~/lib/apiClient";
 
 
 import type {

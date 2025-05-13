@@ -11,15 +11,14 @@ import BlockTextInput
 
 export default function MainEditor() {
   const editingPage = usePageStore.use.editingPage();
-  const blockList = useBlockStore().use.currentPageBlockList();
-  const needUpdateBlockList = useBlockStore().use.needUpdateBlockList();
+  const blockList = useBlockStore.use.currentPageBlockList();
+  const needUpdateBlockList = useBlockStore.use.needUpdateBlockList();
 
   return (
     <div className="editor-container">
       <input className={"page_title"} type="text">
         {editingPage ? editingPage.title : ""}
       </input>
-
       {blockList.map((block, idx) => (
         <>
           <BlockTextInput

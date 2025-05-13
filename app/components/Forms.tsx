@@ -15,7 +15,7 @@ type FormProps<
   TFieldValues extends FieldValues,
   // Schema extends z.Schema<FieldValues, any, any>,
 > = {
-  children: (method: UseFormReturn<TFieldValues>) => React.ReactNode;
+  children: (method: Pick<UseFormReturn<TFieldValues>, any>) => React.ReactNode;
   onSubmit: SubmitHandler<TFieldValues>;
   schema: Schema;
   options?: UseFormProps<TFieldValues>;
@@ -32,11 +32,12 @@ const Form = <T extends FieldValues>(props: FormProps<T>) => {
     resolver: zodResolver(props.schema),
     ...props.options,
   });
-
+  const {register, formState, handleSubmit} = methods
+  const parsedMethods = {register, formState, handleSubmit}
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(props.onSubmit)}>
-        {props.children(methods)}
+      <form onSubmit={parsedMethods.handleSubmit(props.onSubmit)}>
+        {props.children(parsedMethods)}
       </form>
     </FormProvider>
   );

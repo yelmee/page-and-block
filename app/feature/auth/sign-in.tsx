@@ -16,25 +16,31 @@ import {
 import {
     Form
 } from "~/components/Forms";
+import {
+    Link,
+    redirect
+} from "react-router";
+import {
+    useLoginStore
+} from "~/store/useLoginStore";
 
 
-export const SignIp = () => {
-  const { session } = useAuth();
+export default function SignIn(){
   const { signInWithEmail } = useAuth();
-
-  if (session) {
-    return <div> 리턴 마이페이지</div>;
-  }
 
   const onSubmit: SubmitHandler<UserSignUp> = async (params) => {
     const data = await signInWithEmail(params);
+      const user = useLoginStore.use.login;
 
-    if (data.user) {
-      console.log("리턴 메인페이지");
+      console.log(data,'data')
+      if (data.error) {
+          alert(data.error)
+      }
+
+    if (data.data.user) {
+
+      // redirect('index')
     }
-    // if (error) {
-    //   console.log("리턴 에러페이지");
-    // }
   };
 
   return (
@@ -52,7 +58,9 @@ export const SignIp = () => {
           {formState.errors?.password?.message && (
             <p>{formState.errors.password.message}</p>
           )}
-          <button type="submit">계속</button>
+            <button type="submit">계속</button>
+            <Link to={'/sign-up'}><button>계정 등록</button></Link>
+
         </div>
       )}
     />

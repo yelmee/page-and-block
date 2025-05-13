@@ -1,47 +1,59 @@
 import {
-    type SubmitHandler,
-    useForm
+    useAuth
+} from "~/lib/auth";
+import type {
+    SubmitHandler
 } from "react-hook-form";
 import {
     type UserSignUp,
     UserSignUpFormSchema
 } from "~/types/Auth";
-import {
-    zodResolver
-} from "@hookform/resolvers/zod";
-import {
-    useAuth
-} from "~/lib/auth";
 import React
     from "react";
 import {
     InputWithLabel
 } from "~/components/InputWithLabel";
+import {
+    Form
+} from "~/components/Forms";
+import {
+    redirect
+} from "react-router";
 
 
-export const SignUp = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserSignUp>({
-    // resolver: zodResolver(UserSignUpFormSchema),
-    defaultValues: { email: "", password: "" },
-  });
-  const { signUpWithPassword } = useAuth();
+export default function  SignUp(){
+    const { signUpWithPassword } = useAuth();
 
-  const onSubmit: SubmitHandler<UserSignUp> = (data) => {
-    const res = signUpWithPassword(data);
-    alert(JSON.stringify(res));
-  };
+    const onSubmit: SubmitHandler<UserSignUp> = async (params) => {
+        const data = await signUpWithPassword(params);
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <InputWithLabel label="email" register={register} required />
-      {errors?.email?.message && <p>{errors.email.message}</p>}
-      <InputWithLabel label="password" register={register} required />
-      {errors?.password?.message && <p>{errors.password.message}</p>}
-      <button type="submit" />
-    </form>
-  );
+        if (data.error) {
+            alert(data.error)
+        }
+
+        if (data.data) {
+            redirect('sign-in')
+        }
+    };
+
+    return (
+        <Form
+            schema={UserSignUpFormSchema}
+            onSubmit={onSubmit}
+            children={({ register, formState }) => (
+                <div>
+                    <h2>계정 등록</h2>
+                    <InputWithLabel label="email" register={register} required />
+                    {formState.errors?.email?.message && (
+                        <p>{formState.errors.email.message}</p>
+                    )}
+                    <InputWithLabel label="password" register={register} required />
+                    {formState.errors?.password?.message && (
+                        <p>{formState.errors.password.message}</p>
+                    )}
+                    <button type="submit">계속</button>
+                </div>
+            )}
+        />
+    );
 };

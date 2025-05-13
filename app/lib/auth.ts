@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   supabase
-} from "~/lib/apiClient.client";
+} from "~/lib/apiClient";
 import type {
   Session
 } from "@supabase/supabase-js";
@@ -31,40 +31,41 @@ export const useAuth = () => {
   };
 
   const signUpWithPassword = async (user: UserSignUp) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: user.email,
-      password: user.password,
-      options: {
-        emailRedirectTo: import.meta.env.SUPABASE_REDIRECT_URL,
-      },
-    });
-
-    if (error) throw error;
-    return data;
+    //   const { data, error } = await  supabase.auth.signUp({
+    //   email: user.email,
+    //   password: user.password,
+    //   options: {
+    //     emailRedirectTo: 'http://localhost:5173',
+    //   },
+    // });
+    let { data, error } = await supabase.auth.signUp({
+      email: 'someone@email.com',
+      password: 'SqFDNPxPLtZiRLRUyUie'
+    })
+      return {data, error}
   };
 
-  const signInWithEmail = async (user: UserSignUp) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: user.email,
-      password: user.password,
+  const signInWithEmail =  (user: UserSignUp) => {
+    return  supabase.auth.signInWithPassword({
+      // email: user.email,
+      // password: user.password,
+      email: 'someone@email.com',
+      password: 'SqFDNPxPLtZiRLRUyUie'
+
     });
 
-    if (error) throw error;
-    return data;
   };
 
   const resetPasswordForEmail = async (new_password: string) => {
     await supabase.auth.resetPasswordForEmail("valid.email@supabase.io", {
-      redirectTo: "https://example.com/account/update-password",
+      // redirectTo: "https://example.com/account/update-password",
     });
 
     await supabase.auth.updateUser({ password: new_password });
   };
 
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log(error);
-  };
+  const signOut = async () => await supabase.auth.signOut();
+
 
   return {
     signUpWithPassword,

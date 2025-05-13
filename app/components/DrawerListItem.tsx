@@ -11,22 +11,24 @@ export default function DrawerListItem(props: {
   isOpen: boolean;
 }) {
   return (
-    <div className="flex justify-between items-center w-full">
-      <div className={"flex items-center"}>
-        {/*<Icon v-if={!props.isOpen} name={"description"} />*/}
+    <div className="flex justify-between h-1">
         <Text text={props.title} />
-      </div>
-      <div className={"flex"}>
-        <Icon onClick={openPageSettingModal} name={"more_horiz"} />
-        <Icon onClick={openPageEditModal} name={"add"} />
-      </div>
+        <div
+            className={"flex "}>
+            <Icon
+                onClick={openPageSettingModal}
+                name={"more_horiz"}/>
+            <Icon
+                onClick={openPageEditModal}
+                name={"add"}/>
+        </div>
     </div>
   );
 }
 
 const openPageEditModal = () => {
-  return (
-    <Modal domNode={document.body}>
+    return (
+        <Modal domNode={document.body}>
       <div></div>
     </Modal>
   );
