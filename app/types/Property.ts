@@ -4,6 +4,7 @@ export type BlockType = {
   to_do: string[];
 };
 
-export type Property<T extends keyof BlockType> = {
+export type Property<E extends Pick<BlockType, any>, T extends keyof E> = {
   type: T;
-} & Pick<BlockType, T>;
+  title: E
+};

@@ -11,7 +11,7 @@ import DrawerListItem
 
 export default function MainTools() {
   const pageList = usePageStore.use.pageList();
-  const user = useLoginStore.use.user;
+  const user = useLoginStore.use.user();
 
     return (
         <div

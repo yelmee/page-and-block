@@ -1,7 +1,7 @@
 import type {
     Block
 } from "~/types/Block";
-import {
+import React, {
     useRef
 } from "react";
 import {
@@ -14,54 +14,55 @@ import {
 
 type PropsBlockTextInput = {
   block: Block<any>;
-  handleInputEvent: (inputValue: Block<any>) => void;
-  addNeedUpdateBlockList: (block: Block<any>) => void;
+  handleInputEvent: (inputValue: string) => void;
+  // addNeedUpdateBlockList: (block: Block<any>) => void;
 };
+
 export default function BlockTextInput(props: PropsBlockTextInput) {
   const block = useRef<Block<any>>(props.block);
   const needUpdateBlockList = useBlockStore.use.needUpdateBlockList();
-  const addBlock = useBlockStore.use.addBlock();
+  const addBlock =  useBlockStore.use.addBlock();
+
+    const handleItemClick = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === KEY_EVENT.TAB) {
+            addBlock(block.current);
+        }
+
+        if (e.key === KEY_EVENT.ENTER) {
+            addBlock(block.current);
+        }
+    }
 
   return (
     <>
-      <input
+      <textarea
         onChange={(e) => {
-          props.handleInputEvent({
-            ...block.current,
-            properties: {
-              ...block.current?.properties,
-              title: e.target.value,
-            },
-          });
-          props.addNeedUpdateBlockList(block.current);
+          props.handleInputEvent(e.target.value);
         }}
+        onKeyDown={handleItemClick}
         value={block.current?.properties.title}
-        onKeyDown={(e) => {
-          if (e.key === KEY_EVENT.TAB) {
-            addBlock(block.current);
-          }
+        className='bg-transparent font-black text-sm'
+        id='content'
+        name='content'
+        cols={30}
+        rows={1}/>
 
-          if (e.key === KEY_EVENT.ENTER) {
-            addBlock(block.current);
-          }
-        }}
-        className={"block-text-input"}
-      >
-        {block.current.properties.title}
-      </input>
+        {/*<-- child part -->*/}
       {block.current.content.length > 0
-        ? block.current.content.map((content, idx) => (
+        && block.current.content.map((content, idx) => (
             <BlockTextInput
               block={content}
               handleInputEvent={(inputValue) => {
-                block.current.content[idx] = inputValue;
+                block.current.content[idx].properties.title = inputValue;
+                  // needUpdateBlockList.push(idx);
               }}
-              addNeedUpdateBlockList={(blockId) => {
-                needUpdateBlockList.push(blockId);
-              }}
+              // addNeedUpdateBlockList={(blockId) => {
+              //   needUpdateBlockList.push(blockId);
+              // }}
             />
           ))
-        : null}
+        }
     </>
   );
+
 }

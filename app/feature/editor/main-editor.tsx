@@ -20,17 +20,16 @@ export default function MainEditor() {
         {editingPage ? editingPage.title : ""}
       </input>
       {blockList.map((block, idx) => (
-        <>
           <BlockTextInput
             block={block}
             handleInputEvent={(inputValue) => {
-              blockList[idx] = inputValue;
+              blockList[idx].properties.title = inputValue;
+                // needUpdateBlockList.push(block.id);
             }}
-            addNeedUpdateBlockList={(blockId) => {
-              needUpdateBlockList.push(blockId);
-            }}
+            // addNeedUpdateBlockList={(blockId) => {
+            //   needUpdateBlockList.push(blockId);
+            // }}
           />
-        </>
       ))}
     </div>
   );
