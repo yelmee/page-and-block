@@ -13,7 +13,8 @@ import type {
     Page
 } from "~/types/Page";
 import type {
-    Block
+    Block,
+    BlockMapType
 } from "~/types/Block";
 
 // const user = useLoginStore().user;
@@ -44,7 +45,7 @@ const deletePageQuery = (page_id: number) =>
   supabase.from("page").delete().eq("id", page_id);
 
 // block
-const addBlockQuery = (block: Block<any>) =>
+const addBlockQuery = (block: Block) =>
   supabase.from("block").insert({
     properties: JSON.stringify({ type: "text", text: "" }),
     created_by: userId,
@@ -53,7 +54,7 @@ const addBlockQuery = (block: Block<any>) =>
     parent_id: block.parent_id,
   });
 
-const updateBlocksQuery = (blocks: Block<any>[]) =>
+const updateBlocksQuery = (blocks: BlockMapType) =>
   supabase.rpc("bulk_update_blocks", {
     input: JSON.stringify(blocks),
   });

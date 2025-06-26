@@ -13,19 +13,19 @@ import type {
 } from "~/types/Block";
 
 
-const updateBlocks = (blocks: Block<any>[]) =>
+const updateBlocks = (blocks: Block[]) =>
   useQuery({
     queryKey: QUERY_KEY.BLOCK.GET_LIST,
     queryFn: () => updateBlocksQuery(blocks),
   });
 
-const updateBlockList = (pageId: number) =>
+const getBlockListInPage = (pageId: number) =>
   useQuery({
     queryKey: QUERY_KEY.BLOCK.GET_LIST,
     queryFn: () => getBlocksQuery(pageId),
   });
 
-const addBlock = (block: Block<any>) =>
+const addBlock = (block: Block) =>
   useQuery({
     queryKey: QUERY_KEY.BLOCK.ADD,
     queryFn: () => addBlockQuery(block),
@@ -37,4 +37,4 @@ const deleteBlocks = (pageIds: number[]) =>
     queryFn: () => deleteBlocksQuery(pageIds),
   });
 
-export { updateBlocks, addBlock, deleteBlocks, updateBlockList };
+export { updateBlocks, addBlock, deleteBlocks, getBlockListInPage };

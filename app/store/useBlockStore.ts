@@ -1,12 +1,14 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import type {
-    Block
+    Block,
+    BlockMapType,
+    Title
 } from "~/types/Block";
 import {
     addBlock,
     deleteBlocks,
-    updateBlockList,
+    getBlockListInPage,
     updateBlocks
 } from "~/api/api-block";
 import {
@@ -15,61 +17,65 @@ import {
 
 type State = {
   editingPageId: number;
-  currentPageBlockList: Block<any>[];
-  needUpdateBlockList: Block<any>[];
-  needDeleteBlockList: number[];
+  currentPageBlockList: BlockMapType;
+  // needUpdateBlockList: Block[];
+  // needDeleteBlockList: number[];
 };
 
 type Actions = {
-  addBlock: (block: Block<any>) => void;
+    addBlock: (block: Block) => void;
+    addChildBlock: (block: Block) => void;
   deleteBlock: (id: number) => void;
-  updateBlocks: () => void;
+  // updateBlocks: () => void;
   updateBlockList: () => void;
-  setBlocks: (idx: number, block: Block<any>) => void;
-  addNeedUpdateBlockList: (block: Block<any>) => void;
-  addNeedDeleteBlockList: (id: number) => void;
+    setBlock: (block: Block, title: Title) => void;
+    getBlockByParentId: (id: string | null) => Block[];
+  // addNeedUpdateBlockList: (block: Block) => void;
+  // addNeedDeleteBlockList: (id: number) => void;
 };
 
 export const store = create<State & Actions>()(
   immer((setState, getState) => ({
     editingPageId: 0,
-    currentPageBlockList: [] as Block<any>[],
-    needUpdateBlockList: [] as Block<any>[],
-    needDeleteBlockList: [] as number[],
+    currentPageBlockList: {} as BlockMapType,
     addBlock: (block) =>
       setState(() => {
         addBlock(block);
         getState().updateBlockList();
       }),
+      addChildBlock: (block) =>
+          setState(() => {
+              addChildBlock(block);
+              getState().updateBlockList();
+          }),
     deleteBlock: (id) =>
       setState(() => {
-        getState().needDeleteBlockList.push(id);
-        getState().currentPageBlockList =
-          getState().currentPageBlockList?.filter((block) => block.id !== id);
-      }),
-    updateBlocks: () =>
-      setState(() => {
-        deleteBlocks(getState().needDeleteBlockList);
-        updateBlocks(getState().needUpdateBlockList);
-        getState().updateBlockList();
+        // getState().currentPageBlockList =
+          // getState().currentPageBlockList?.filter((block) => block.id !== id);
       }),
     updateBlockList: () =>
       setState(() => {
-        const { data } = updateBlockList(getState().editingPageId);
+          const pageId = getState().editingPageId
+        const { data } = getBlockListInPage(pageId);
         getState().currentPageBlockList = data as any;
       }),
-    setBlocks: (idx, block) =>
+    setBlock: (block) =>
       setState(() => {
-        getState().currentPageBlockList[idx] = block;
+        getState().currentPageBlockList[block.id] = block;
       }),
-    addNeedUpdateBlockList: (block) =>
-      setState(() => {
-        getState().needUpdateBlockList.push(block);
-      }),
-    addNeedDeleteBlockList: (id) =>
-      setState(() => {
-        getState().needDeleteBlockList.push(id);
-      }),
+      getBlockByParentId: (id: string | null) =>
+      {
+        return Object.values(getState().currentPageBlockList).filter((block)=> block.parent_id === id)
+
+      }
+    // addNeedUpdateBlockList: (block) =>
+    //   setState(() => {
+    //     // getState().needUpdateBlockList.push(block);
+    //   }),
+    // addNeedDeleteBlockList: (id) =>
+    //   setState(() => {
+    //     // getState().needDeleteBlockList.push(id);
+    //   }),
   })),
 );
 

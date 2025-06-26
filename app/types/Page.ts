@@ -7,8 +7,8 @@ type Page = {
 };
 
 // type UpdatePageParams = {
-//   updatedBlocks: Block<any>[];
-//   newBlocks: Block<any>[];
+//   updatedBlocks: Block[];
+//   newBlocks: Block[];
 //   updatedPage: Page;
 // };
 
